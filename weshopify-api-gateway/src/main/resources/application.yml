@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: weshopify-api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: false
+      routes:
+      - id: WE-SHOPIFY-BRANDS-MICROSERVICE
+        uri: lb://WE-SHOPIFY-BRANDS-MICROSERVICE
+        predicates:
+         - Path= /api/gateway/brands/**
+        filters:
+         - RewritePath=/api/gateway/brands/(?<segment>.*),/${segment}
+      - id: WE-SHOPIFY-CATOGORIES-MICROSERVICE
+        uri: lb://WE-SHOPIFY-CATOGORIES-MICROSERVICE
+        predicates:
+         - Path= /api/gateway/cats/**
+        filters:
+         - RewritePath=/api/gateway/cats/(?<segment>.*),/${segment}
+server:
+  port: 5006
+          
